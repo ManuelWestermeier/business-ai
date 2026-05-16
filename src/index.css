@@ -1,0 +1,115 @@
+@import '@fontsource-variable/syne';
+@import '@fontsource-variable/outfit';
+@import '@fontsource-variable/jetbrains-mono';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-outfit text-ink bg-white;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-syne font-semibold;
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-accent text-ink font-syne font-semibold text-sm px-6 py-3 border border-accent
+           hover:bg-accent-dim hover:border-accent-dim
+           disabled:opacity-40 disabled:cursor-not-allowed
+           transition-all duration-150 inline-flex items-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-ink font-syne font-semibold text-sm px-6 py-3 border border-border
+           hover:border-ink hover:bg-surface
+           disabled:opacity-40 disabled:cursor-not-allowed
+           transition-all duration-150 inline-flex items-center gap-2;
+  }
+
+  .input-field {
+    @apply w-full border border-border bg-white text-ink font-outfit text-sm px-4 py-3
+           placeholder:text-muted
+           focus:outline-none focus:border-ink
+           transition-colors duration-150;
+  }
+
+  .textarea-field {
+    @apply w-full border border-border bg-white text-ink font-outfit text-sm px-4 py-3
+           placeholder:text-muted resize-none
+           focus:outline-none focus:border-ink
+           transition-colors duration-150;
+  }
+
+  .card {
+    @apply border border-border bg-white p-6;
+  }
+
+  .label {
+    @apply font-mono text-xs text-muted uppercase tracking-widest;
+  }
+
+  .phase-dot {
+    @apply w-2 h-2 flex-shrink-0;
+  }
+}
+
+/* Streaming cursor */
+.stream-cursor::after {
+  content: '▋';
+  @apply text-accent animate-blink ml-0.5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-border;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted;
+}
+
+/* Prose-like styles for AI output */
+.ai-output h2 {
+  @apply font-syne font-semibold text-base mt-6 mb-2 text-ink;
+}
+.ai-output h3 {
+  @apply font-syne font-semibold text-sm mt-4 mb-1 text-ink;
+}
+.ai-output p {
+  @apply mb-3 leading-relaxed;
+}
+.ai-output ul {
+  @apply space-y-1 mb-3;
+}
+.ai-output li {
+  @apply flex gap-2;
+}
+.ai-output li::before {
+  content: '—';
+  @apply text-accent flex-shrink-0;
+}
+.ai-output strong {
+  @apply font-semibold text-ink;
+}
