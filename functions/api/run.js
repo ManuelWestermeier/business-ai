@@ -18,7 +18,7 @@ export async function onRequest(context) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${env.NVIDIA_API_KEY}`, // in Cloudflare env setzen
+            'Authorization': request.headers.get('Authorization') || '',
         },
         body: JSON.stringify(body),
         signal: controller.signal,

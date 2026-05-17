@@ -2,6 +2,7 @@ const BASE_URL = '/api/run'
 const MODEL = 'deepseek-ai/deepseek-v4-pro'
 
 export async function streamCompletion({
+  apiKey,
   messages,
   onChunk,
   onDone,
@@ -14,6 +15,7 @@ export async function streamCompletion({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: MODEL,
@@ -72,11 +74,12 @@ export async function streamCompletion({
   }
 }
 
-export async function complete({ messages, maxTokens = 256 }) {
+export async function complete({ messages, maxTokens = 256, apiKey }) {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       model: MODEL,
