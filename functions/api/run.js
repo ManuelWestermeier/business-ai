@@ -1,5 +1,5 @@
 export async function onRequest(context) {
-    const { request, env } = context
+    const { request } = context
 
     if (request.method !== 'POST') {
         return new Response('Method Not Allowed', { status: 405 })
@@ -12,16 +12,14 @@ export async function onRequest(context) {
         return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400 })
     }
 
-    const controller = new AbortController()
-
     const upstream = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': request.headers.get('Authorization') || '',
+            'Accept': 'text/event-stream', // wichtig
         },
         body: JSON.stringify(body),
-        signal: controller.signal,
     })
 
     if (!upstream.ok) {
@@ -36,13 +34,12 @@ export async function onRequest(context) {
         })
     }
 
-    // Streaming direkt durchreichen
+    // Header vom Upstream übernehmen
+    const headers = new Headers(upstream.headers)
+    headers.set('Cache-Control', 'no-cache')
+
     return new Response(upstream.body, {
-        status: 200,
-        headers: {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive',
-        },
+        status: upstream.status,
+        headers,
     })
 }
